@@ -120,10 +120,10 @@ export default function App() {
       <button
         key="prev"
         onClick={() => handlePageChange(currentPage - 1)}
-        className={currentPage === 1 ? "disabled" : ""}
+        className={[`navigatorButtons${currentPage === 1 ? " disabled" : ""}`]}
         disabled={currentPage === 1}
       >
-        Prev
+        Previous
       </button>
     );
 
@@ -156,7 +156,7 @@ export default function App() {
       <button
         key="next"
         onClick={() => handlePageChange(currentPage + 1)}
-        className={currentPage === totalPages ? "disabled" : ""}
+        className={[`navigatorButtons${currentPage === totalPages ? " disabled" : ""}`]}
         disabled={currentPage === totalPages}
       >
         Next
@@ -199,6 +199,7 @@ export default function App() {
           <label htmlFor="customTotalItems"> Show </label>
           <input
             type="number"
+            className="numberInput"
             id="customTotalItems"
             value={customTotalItems}
             onChange={handleCustomTotalItemsChange}
@@ -209,15 +210,17 @@ export default function App() {
           />
           <label> entries </label>
         </div>
-        <label for="search">Search: </label>
-        <input
-          id="search"
-          type="search"
-          value={searchInput}
-          onChange={handleSearchInputChange}
-          className="input-right"
-          placeholder="Search by description or brand"
-        />
+        <div>
+          <label for="search">Search: </label>
+          <input
+            id="search"
+            type="search"
+            value={searchInput}
+            onChange={handleSearchInputChange}
+            className="inputRight"
+            placeholder="Search by description or brand"
+          />
+        </div>
       </div>
       <table>
         <thead>
@@ -225,7 +228,10 @@ export default function App() {
         </thead>
         <tbody>{renderTableRows()}</tbody>
       </table>
-      <div className="pagination">{renderPaginationButtons()}</div>
+      <div>
+        Showing {totalItems * currentPage - totalItems + 1} to {totalItems * currentPage} of {products.length} entries
+      </div>
+      <div className="pagination inputRight">{renderPaginationButtons()}</div>
     </div>
   );
 }
