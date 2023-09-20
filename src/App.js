@@ -8,7 +8,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
-  const [customTotalItems, setCustomTotalItems] = useState('');
+  const [customTotalItems, setCustomTotalItems] = useState(5);
 
   useEffect(() => {
     fetchProducts();
