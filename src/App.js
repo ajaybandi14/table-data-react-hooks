@@ -194,7 +194,8 @@ export default function App() {
 
   const renderItemsRange = () => {
     const totalItemsCount = products.length;
-    if (totalItemsCount === 0) {
+    const sorted = sortedProducts();
+    if (totalItemsCount === 0 || sorted.length === 0) {
       return "No entries to display";
     }
 
@@ -206,7 +207,7 @@ export default function App() {
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex card">
         <div>
           <label htmlFor="customTotalItems"> Show </label>
           <input
@@ -223,7 +224,7 @@ export default function App() {
           <label> entries </label>
         </div>
         <div className="flexCenter">
-          <label for="search">Search: </label>
+          <label htmlFor="search">Search: </label>
           <input
             id="search"
             type="search"

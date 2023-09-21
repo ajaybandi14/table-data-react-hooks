@@ -96,6 +96,7 @@ th, td {
   justify-content: space-between;
   align-items: end;
   margin: 20px 0;
+  margin-bottom: 0;
 }
 
 input[type="number"], input[type="search"] {
@@ -106,4 +107,15 @@ input[type="number"], input[type="search"] {
 .flexCenter {
   display: flex;
   justify-content: center;
+}
+
+.card {
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,.2);
+  padding: 20px;
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: #007bff;
+  color: white;
+  font-size: 15px;
 }
