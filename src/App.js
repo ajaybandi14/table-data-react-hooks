@@ -192,6 +192,18 @@ export default function App() {
       ));
   };
 
+  const renderItemsRange = () => {
+    const totalItemsCount = products.length;
+    if (totalItemsCount === 0) {
+      return "No entries to display";
+    }
+
+    const startItemIndex = (currentPage - 1) * totalItems + 1;
+    const endItemIndex = Math.min(currentPage * totalItems, totalItemsCount);
+
+    return `Showing ${startItemIndex} to ${endItemIndex} of ${totalItemsCount} entries`;
+  };
+
   return (
     <div>
       <div className="flex">
@@ -229,7 +241,7 @@ export default function App() {
         <tbody>{renderTableRows()}</tbody>
       </table>
       <div>
-        Showing {totalItems * currentPage - totalItems + 1} to {totalItems * currentPage} of {products.length} entries
+        {renderItemsRange()}
       </div>
       <div className="pagination inputRight">{renderPaginationButtons()}</div>
     </div>
