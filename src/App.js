@@ -240,10 +240,12 @@ export default function App() {
         </thead>
         <tbody>{renderTableRows()}</tbody>
       </table>
-      <div>
-        {renderItemsRange()}
+      <div className='flex'>
+        <div>
+          {renderItemsRange()}
+        </div>
+        <div className="pagination inputRight">{renderPaginationButtons()}</div>
       </div>
-      <div className="pagination inputRight">{renderPaginationButtons()}</div>
     </div>
   );
 }
