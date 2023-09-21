@@ -217,6 +217,7 @@ export default function App() {
             value={customTotalItems}
             onChange={handleCustomTotalItemsChange}
             onBlur={handleCustomTotalItemsBlur}
+            onKeyUp={handleCustomTotalItemsBlur}
             onKeyPress={handleCustomTotalItemsKeyPress}
             onKeyDown={handleArrowUpDown}
             min="1"
