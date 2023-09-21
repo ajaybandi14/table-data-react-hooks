@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,700;1,300&display=swap');
+
 * {
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -33,7 +36,8 @@ thead tr {
 
 table {
   border-collapse: collapse;
-  margin: 25px 0;
+  margin: 0;
+  width: 100%;
   font-size: 0.9em;
   font-family: sans-serif;
   min-width: 400px;
@@ -91,4 +95,14 @@ th, td {
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
+}
+
+input[type="number"], input[type="search"] {
+  border: 1px solid #e4e4e4;
+  border-radius: 5px;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
 }

@@ -222,7 +222,7 @@ export default function App() {
           />
           <label> entries </label>
         </div>
-        <div>
+        <div className="flexCenter">
           <label for="search">Search: </label>
           <input
             id="search"
