@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 
+const headers = [{name: "Description", type: "description"}, {name: "Brand", type: "brand"}, {name: "Stock", type: "stock"}, {name: "Price", type: "price"}];
+
+const searchableHeaders = ['description', 'brand', 'stock', 'price'];
+
 export default function App() {
   const [searchInput, setSearchInput] = useState('');
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
   const [totalItems, setTotalItems] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState(null);
@@ -11,29 +15,35 @@ export default function App() {
   const [customTotalItems, setCustomTotalItems] = useState(5);
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchData = async () => {
     try {
       const url = 'https://dummyjson.com/products';
       const response = await fetch(url);
       const json = await response.json();
-      setProducts(json.products);
+      setData(json.products);
     } catch (error) {
       console.log("Error Fetching Products", error);
     }
   };
 
-  const filterProducts = () => {
-    return products.filter(product =>
-      product.description.toLowerCase().includes(searchInput.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchInput.toLowerCase())
-    );
+  const filterData = () => {
+    if (!searchInput) {
+      return data;
+    }
+
+    const sanitizedSearchInput = searchInput.toLowerCase();
+
+    return data.filter((item) => searchableHeaders.some((column) => {
+      const columnValue = String(item[column]).toLowerCase();
+      return columnValue.includes(sanitizedSearchInput);
+    }));
   };
 
-  const calculateTotalPages = (filteredProducts) => {
-    return Math.ceil(filteredProducts.length / totalItems);
+  const calculateTotalPages = (filteredData) => {
+    return Math.ceil(filteredData.length / totalItems);
   };
 
   const handleSearchInputChange = (e) => {
@@ -54,8 +64,8 @@ export default function App() {
     }
   };
 
-  const sortedProducts = () => {
-    let sorted = [...filterProducts()];
+  const sortedData = () => {
+    let sorted = [...filterData()];
     if (sortBy) {
       sorted = sorted.sort((a, b) => {
         const aValue = sortBy === 'stock' || sortBy === 'price'
@@ -112,7 +122,7 @@ export default function App() {
   };
 
   const renderPaginationButtons = () => {
-    const totalPages = calculateTotalPages(sortedProducts());
+    const totalPages = calculateTotalPages(sortedData());
     const buttons = [];
 
     // Previous Button
@@ -167,11 +177,10 @@ export default function App() {
   };
 
   const renderTableHeaders = () => {
-    const headers = ["description", "brand", "stock", "price"];
     return headers.map((header, index) => (
-      <th key={index} onClick={() => handleHeaderClick(header)}>
-        {header.charAt(0).toUpperCase() + header.slice(1)}
-        {sortBy === header && (
+      <th key={index} onClick={() => handleHeaderClick(header.type)}>
+        {header.name}
+        {sortBy === header.type && (
           <span>{sortDirection === 'asc' ? '▲' : '▼'}</span>
         )}
       </th>
@@ -179,22 +188,22 @@ export default function App() {
   };
 
   const renderTableRows = () => {
-    const sorted = sortedProducts();
+    const sorted = sortedData();
     return sorted
       .slice((currentPage - 1) * totalItems, currentPage * totalItems)
-      .map((product, index) => (
+      .map((item, index) => (
         <tr key={index}>
-          <td>{product.description}</td>
-          <td>{product.brand}</td>
-          <td>{product.stock}</td>
-          <td>{product.price}</td>
+          <td>{item.description}</td>
+          <td>{item.brand}</td>
+          <td>{item.stock}</td>
+          <td>{item.price}</td>
         </tr>
       ));
   };
 
   const renderItemsRange = () => {
-    const totalItemsCount = products.length;
-    const sorted = sortedProducts();
+    const totalItemsCount = data.length;
+    const sorted = sortedData();
     if (totalItemsCount === 0 || sorted.length === 0) {
       return "No entries to display";
     }
