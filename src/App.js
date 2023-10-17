@@ -5,6 +5,8 @@ const headers = [{name: "Description", type: "description"}, {name: "Brand", typ
 
 const searchableHeaders = ['description', 'brand', 'stock', 'price'];
 
+const numericHeaders = ['stock', 'price'];
+
 export default function App() {
   const [searchInput, setSearchInput] = useState('');
   const [data, setData] = useState([]);
@@ -68,10 +70,10 @@ export default function App() {
     let sorted = [...filterData()];
     if (sortBy) {
       sorted = sorted.sort((a, b) => {
-        const aValue = sortBy === 'stock' || sortBy === 'price'
+        const aValue = numericHeaders.includes(sortBy)
           ? parseFloat(a[sortBy])
           : a[sortBy].toLowerCase();
-        const bValue = sortBy === 'stock' || sortBy === 'price'
+        const bValue = numericHeaders.includes(sortBy)
           ? parseFloat(b[sortBy])
           : b[sortBy].toLowerCase();
   
