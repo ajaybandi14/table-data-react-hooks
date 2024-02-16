@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 
-const headers = [{name: "Description", type: "description"}, {name: "Brand", type: "brand"}, {name: "Stock", type: "stock"}, {name: "Price", type: "price"}];
+const headers = [
+  { name: 'Description', type: 'description' },
+  { name: 'Brand', type: 'brand' },
+  { name: 'Stock', type: 'stock' },
+  { name: 'Price', type: 'price' },
+];
 
 const searchableHeaders = ['description', 'brand', 'stock', 'price'];
 
@@ -27,7 +32,7 @@ export default function App() {
       const json = await response.json();
       setData(json.products);
     } catch (error) {
-      console.log("Error Fetching Products", error);
+      console.log('Error Fetching Products', error);
     }
   };
 
@@ -38,10 +43,12 @@ export default function App() {
 
     const sanitizedSearchInput = searchInput.toLowerCase();
 
-    return data.filter((item) => searchableHeaders.some((column) => {
-      const columnValue = String(item[column]).toLowerCase();
-      return columnValue.includes(sanitizedSearchInput);
-    }));
+    return data.filter((item) =>
+      searchableHeaders.some((column) => {
+        const columnValue = String(item[column]).toLowerCase();
+        return columnValue.includes(sanitizedSearchInput);
+      })
+    );
   };
 
   const calculateTotalPages = (filteredData) => {
@@ -68,28 +75,32 @@ export default function App() {
 
   const sortedData = () => {
     let sorted = [...filterData()];
+
+    const getNestedPropertyValue = (obj, keys) =>
+      keys.split('.').reduce((acc, key) => acc?.[key], obj);
+
     if (sortBy) {
       sorted = sorted.sort((a, b) => {
         const aValue = numericHeaders.includes(sortBy)
-          ? parseFloat(a[sortBy])
-          : a[sortBy].toLowerCase();
+          ? parseFloat(getNestedPropertyValue(a, sortBy))
+          : getNestedPropertyValue(a, sortBy).toLowerCase();
         const bValue = numericHeaders.includes(sortBy)
-          ? parseFloat(b[sortBy])
-          : b[sortBy].toLowerCase();
-  
+          ? parseFloat(getNestedPropertyValue(b, sortBy))
+          : getNestedPropertyValue(b, sortBy).toLowerCase();
+
         // Compare strings using localeCompare for case-insensitive sorting
         if (typeof aValue === 'string' && typeof bValue === 'string') {
           return sortDirection === 'asc'
             ? aValue.localeCompare(bValue)
             : bValue.localeCompare(aValue);
         }
-  
+
         // Compare numbers
         return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
       });
     }
     return sorted;
-  };  
+  };
 
   const handleCustomTotalItemsChange = (e) => {
     setCustomTotalItems(e.target.value);
@@ -132,7 +143,7 @@ export default function App() {
       <button
         key="prev"
         onClick={() => handlePageChange(currentPage - 1)}
-        className={[`navigatorButtons${currentPage === 1 ? " disabled" : ""}`]}
+        className={[`navigatorButtons${currentPage === 1 ? ' disabled' : ''}`]}
         disabled={currentPage === 1}
       >
         Previous
@@ -150,15 +161,12 @@ export default function App() {
           <button
             key={page}
             onClick={() => handlePageChange(page)}
-            className={currentPage === page ? "active" : ""}
+            className={currentPage === page ? 'active' : ''}
           >
             {page}
           </button>
         );
-      } else if (
-        page === currentPage - 2 ||
-        page === currentPage + 2
-      ) {
+      } else if (page === currentPage - 2 || page === currentPage + 2) {
         buttons.push(<span key={`ellipsis${page}`}>...</span>);
       }
     }
@@ -168,7 +176,9 @@ export default function App() {
       <button
         key="next"
         onClick={() => handlePageChange(currentPage + 1)}
-        className={[`navigatorButtons${currentPage === totalPages ? " disabled" : ""}`]}
+        className={[
+          `navigatorButtons${currentPage === totalPages ? ' disabled' : ''}`,
+        ]}
         disabled={currentPage === totalPages}
       >
         Next
@@ -207,7 +217,7 @@ export default function App() {
     const totalItemsCount = data.length;
     const sorted = sortedData();
     if (totalItemsCount === 0 || sorted.length === 0) {
-      return "No entries to display";
+      return 'No entries to display';
     }
 
     const startItemIndex = (currentPage - 1) * totalItems + 1;
@@ -253,10 +263,8 @@ export default function App() {
         </thead>
         <tbody>{renderTableRows()}</tbody>
       </table>
-      <div className='flex'>
-        <div>
-          {renderItemsRange()}
-        </div>
+      <div className="flex">
+        <div>{renderItemsRange()}</div>
         <div className="pagination inputRight">{renderPaginationButtons()}</div>
       </div>
     </div>
